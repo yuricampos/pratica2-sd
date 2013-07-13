@@ -2,9 +2,9 @@
 #include <rpc/rpc.h>
 #include <stdlib.h>
 #include <string.h>
-#define intrcvprog ((u_long)150000)
-#define version    ((u_long)1)
-#define intrcvproc ((u_long)1)
+#define cadprog ((u_long)150000)
+#define cadver    ((u_long)1)
+#define cadproc ((u_long)1)
 
 main(argc, argv)
    int argc;
@@ -28,16 +28,13 @@ main(argc, argv)
                 setbuf(stdin, NULL);
                 char nome[50];
                 char telefone[50];
-                char operacao[1];
-                char final[101];
-                strcpy(operacao,"1");
+                char final[100];
                 printf("\n\n Opcao escolhida: Armazenar / Atualizar um registro \n");
                 printf("Entre com o nome do contato ");
                 scanf("%[^\n]s", nome);
                 setbuf(stdin, NULL);
                 strcat(nome,"#");
-                strcat(final,operacao);
-                strcat(final,nome);
+                strcpy(final,nome);
                 printf("Entre com o telefone do contato ");
                 scanf("%[^\n]",telefone);
                 setbuf(stdin, NULL);
@@ -46,13 +43,8 @@ main(argc, argv)
                 puts(final);
                 innumber = final;
                 puts(innumber);
-                callrpc(argv[1],intrcvprog,version,intrcvproc,xdr_wrapstring,&innumber,xdr_wrapstring,&outnumber);
+                callrpc(argv[1],cadprog,cadver,cadproc,xdr_wrapstring,&innumber,xdr_wrapstring,&outnumber);
                 printf("value sent: %s   value received: %s\n", innumber, outnumber);
-                strcpy(nome,"");
-                strcpy(telefone,"");
-                strcpy(operacao,"");
-                strcpy(final,"");
-                strcpy(innumber,"");
                 break;
             }
 
@@ -80,3 +72,4 @@ main(argc, argv)
    }
 
 }
+

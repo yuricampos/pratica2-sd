@@ -2,15 +2,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define intrcvprog ((u_long)150000)
-#define intvers    ((u_long)1)
-#define intrcvproc ((u_long)1)
+
+//Cadastra
+#define cadprog   ((u_long)150000)
+#define cadver    ((u_long)1)
+#define cadproc   ((u_long)1) 
+//Atualiza
+#define atuaprog  ((u_long)150100)
+#define atuaver   ((u_long)1)
+#define atuaproc  ((u_long)1)
+//Deleta
+#define delprog   ((u_long)150200)
+#define delver    ((u_long)1)
+#define delproc   ((u_long)1)
+//Consulta
+#define conprog   ((u_long)150300)
+#define conver    ((u_long)1)
+#define conproc   ((u_long)1)
+
 
 main()
 {
-   char **intrcv(char**);
+   char **cadastro(char**);
+   char **atualiza(char**);
+   char **deleta(char**);
+   char **consulta(char**);
+   //Cadastro
+   registerrpc(cadprog,cadver,cadproc,cadastro,xdr_wrapstring,xdr_wrapstring);
+   //Atualiza
+   registerrpc(atuaprog,atuaver,atuaproc,atualiza,xdr_wrapstring,xdr_wrapstring);
+   //Deleta
+   registerrpc(delprog,delver,delproc,deleta,xdr_wrapstring,xdr_wrapstring);
+   //Consulta
+   registerrpc(conprog,conver,conproc,consulta,xdr_wrapstring,xdr_wrapstring);
 
-   registerrpc(intrcvprog,intvers,intrcvproc,intrcv,xdr_wrapstring,xdr_wrapstring);
    printf("String Registration with Port Mapper completed\n");
    svc_run();
    printf("Error:svc_run returned!\n");
@@ -18,21 +43,19 @@ main()
 }
 
 char **
-intrcv(in)
+cadastro(in)
    char **in;
 {
    char *out = malloc(64);
-   char manipula[101];
-   char arrumando[101];
+   char manipula[500];
    int limitenome;
    int limitetelefone;
-   char nome[50];
-   char telefone[50];
+   char nome[500];
+   char telefone[500];
    printf("string received: %s\n",*in);
    char *ptr;
-   strcpy(out, *in);
+   strcpy(out, "sucesso");
    strcpy(manipula, *in);
-   strcpy(arrumando, manipula);
    ptr = strchr(manipula, '#');
    if (*ptr)
       {
@@ -48,21 +71,49 @@ intrcv(in)
 
    int i;
    int j;
-   for(i = 1 ; i < limitenome ; i++){
-      printf("Posicao: %d \n",i);
-      printf("Fazendo letra: %c \n",arrumando[i]);
-      for(j = 0 ; j < limitenome - 1 ; j++){
-         nome[j] = arrumando[i];
-      }
+   for(i = 0 ; i < limitenome ; i++){
+         char letra = manipula[i];
+         nome[i]=letra;
+         
    }
-   printf("NOME: ");
-   puts(nome);
 
-   //printf("A primeira ocorrência de # é na posição %d\n",limitenome);
-   //printf("Manipula: %c \n",manipula[limitenome]);
-   //printf("A última ocorrência de # é na posição %d\n",limitetelefone);
-   //printf("Manipula: %c \n",manipula[limitetelefone]);
+   for(j = 0 ; j < limitetelefone - limitenome - 1  ; j++){
+         char numero = manipula[limitenome + j + 1];
+         telefone[j]=numero;
+         
+   }
+   printf("Nome: %s \n",nome);
+   printf("Telefone: %s \n",telefone);
    return (&out);
 }
 
+char **
+atualiza(in)
+   char **in;
+{
+   char *out = malloc(64);
+   strcpy(out, "sucesso");
+   return (&out);
+
+}
+
+char **
+deleta(in)
+   char **in;
+{
+   char *out = malloc(64);
+   strcpy(out, "sucesso");
+   return (&out);
+
+}
+
+char **
+consulta(in)
+   char **in;
+{
+   char *out = malloc(64);
+   strcpy(out, "sucesso");
+   return (&out);
+
+}
 
